@@ -1,53 +1,63 @@
-import React from 'react';
-
+import React, { useState, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import api from '../../services/api';
+
 import logoImg from '../../assets/logo.svg';
 
 import { Title, Form, Repositories } from './styles';
 
+interface Repository {
+  full_name: string;
+  description: string;
+  owner: {
+    login: string;
+    avatar_url: string;
+  };
+}
+
 const Dashboard: React.FC = () => {
+  const [newRepo, setNewRepo] = useState('');
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+
+  async function handleAddRepository(
+    event: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
+    event.preventDefault();
+
+    const response = await api.get<Repository>(`repos/${newRepo}`);
+
+    const repository = response.data;
+
+    setRepositories([...repositories, repository]);
+    setNewRepo('');
+  }
+
   return (
     <>
       <img src={logoImg} alt="GitHub Explorer" />
       <Title>GitHub Explorer</Title>
-      <Form>
-        <input placeholder="Enter the name of the repository" />
+      <Form onSubmit={handleAddRepository}>
+        <input
+          value={newRepo}
+          onChange={e => setNewRepo(e.target.value)}
+          placeholder="Enter the name of the repository"
+        />
         <button type="submit">Search</button>
       </Form>
       <Repositories>
-        <a href="teste">
-          <img
-            src="https://avatars2.githubusercontent.com/u/6334925?s=460&u=22ac11f121d145ba9c4cd0f3be6cec2d2e0e2d89&v=4"
-            alt="Igor Dias"
-          />
-          <div>
-            <strong>Igorth/githubexplorer</strong>
-            <p>GitHub Explorer</p>
-          </div>
-          <FiChevronRight size={20} />
-        </a>
-        <a href="teste">
-          <img
-            src="https://avatars2.githubusercontent.com/u/6334925?s=460&u=22ac11f121d145ba9c4cd0f3be6cec2d2e0e2d89&v=4"
-            alt="Igor Dias"
-          />
-          <div>
-            <strong>Igorth/githubexplorer</strong>
-            <p>GitHub Explorer</p>
-          </div>
-          <FiChevronRight size={20} />
-        </a>
-        <a href="teste">
-          <img
-            src="https://avatars2.githubusercontent.com/u/6334925?s=460&u=22ac11f121d145ba9c4cd0f3be6cec2d2e0e2d89&v=4"
-            alt="Igor Dias"
-          />
-          <div>
-            <strong>Igorth/githubexplorer</strong>
-            <p>GitHub Explorer</p>
-          </div>
-          <FiChevronRight size={20} />
-        </a>
+        {repositories.map(repository => (
+          <a key={repository.full_name} href="teste">
+            <img
+              src={repository.owner.avatar_url}
+              alt={repository.owner.login}
+            />
+            <div>
+              <strong>{repository.full_name}</strong>
+              <p>{repository.description}</p>
+            </div>
+            <FiChevronRight size={20} />
+          </a>
+        ))}
       </Repositories>
     </>
   );
