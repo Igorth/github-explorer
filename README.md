@@ -4,7 +4,7 @@
 Creating a repository search using the GitHub API.
 
 ## 🕹Demo
-![](../src/assets/githubexplorer.gif)
+![](githubexplorer.gif)
 
 ## 📺 What I learned
 React | TypeScript | Styled Components | useState | useEffect
