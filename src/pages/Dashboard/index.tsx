@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
   ): Promise<void> {
     event.preventDefault();
     if (!newRepo) {
-      setInputError('Enter the author / name of the repository');
+      setInputError('Enter the author/name of the repository');
       return;
     }
 
@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
         <input
           value={newRepo}
           onChange={e => setNewRepo(e.target.value)}
-          placeholder="Enter the name of the repository"
+          placeholder="Enter the autor/name of the repository"
         />
         <button type="submit">Search</button>
       </Form>

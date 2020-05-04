@@ -6,7 +6,7 @@ Creating a repository search using the GitHub API.
 ## 🕹Demo
 
 ## 📺 What I learned
-React | ...
+React | TypeScript | Styled Components | useState | useEffect
 
 ## Instructions
 
